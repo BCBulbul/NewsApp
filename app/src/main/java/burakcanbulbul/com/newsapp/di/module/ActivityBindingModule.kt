@@ -11,4 +11,5 @@ abstract class ActivityBindingModule {
     abstract fun bindBaseActivity() : BaseActivity
     @ContributesAndroidInjector
     abstract fun bindMainActivity() : MainActivity
+
 }
