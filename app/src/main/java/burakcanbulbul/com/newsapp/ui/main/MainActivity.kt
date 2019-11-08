@@ -4,6 +4,8 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import burakcanbulbul.com.newsapp.R
 import burakcanbulbul.com.newsapp.adapter.NewsListAdapter
@@ -21,8 +23,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), MainContract.View {
-
+class MainActivity : BaseActivity(), MainContract.View, AdapterView.OnItemClickListener {
 
     @Inject
     lateinit var newsAppDataSource: NewsAppDataSource
@@ -34,42 +35,13 @@ class MainActivity : BaseActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutRes())
         init()
-     /*   newsAppDataSource.getSources().enqueue(object : Callback<DataSource>{
-
-            override fun onResponse(call: Call<DataSource>, response: Response<DataSource>) {
-                if(response.isSuccessful.and(response.body() != null)){
-                    Log.d("SourceData",response.body()!!.sources[0].description)
-                    val adapter : NewsListAdapter = NewsListAdapter(this@MainActivity, response.body()!!)
-                    news_listview.adapter = adapter
-                }
-
-            }
-
-            override fun onFailure(call: Call<DataSource>, t: Throwable) {
-                Log.d("SourceFailure",t.message)
-            }
-
-        })*/
-
-        /*
-
-        newsAppDataSource.getArticleHeadlines().enqueue(object : Callback<Headlines> {
-
-            override fun onResponse(call: Call<Headlines>, response: Response<Headlines>) {
-                if(response.isSuccessful.and(response.body() != null))
-                Log.d("DATA","Article Description : "+ response.body()!!.articles[0].content)
-            }
-
-            override fun onFailure(call: Call<Headlines>, t: Throwable) {
-                Log.d("onFailure",t.message)
-            }
-
-        })*/
     }
 
     override fun getLayoutRes(): Int = R.layout.activity_main
 
     override fun init() {
+        changeStatusBarColor(R.color.news_blue)
+        news_listview.onItemClickListener = this
         initPresenter()
     }
 
@@ -87,6 +59,10 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun fetchNewsSources() {
         mainPresenter.getNewsSources()
+    }
+
+    override fun onItemClick(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Toast.makeText(this,"Tıklandı : "+position,Toast.LENGTH_LONG).show()
     }
 
 
