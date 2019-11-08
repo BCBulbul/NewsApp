@@ -5,6 +5,7 @@ import android.content.Context
 import android.support.multidex.MultiDex
 import android.support.v4.app.Fragment
 import burakcanbulbul.com.newsapp.di.component.DaggerApplicationComponent
+import com.squareup.picasso.Picasso
 import dagger.android.*
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -19,6 +20,11 @@ class MainApplication : DaggerApplication(), HasFragmentInjector, HasActivityInj
     companion object {
         var instance: MainApplication? = null
             private set
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        initLibraries()
     }
 
     override fun attachBaseContext(base: Context?) {
@@ -37,6 +43,10 @@ class MainApplication : DaggerApplication(), HasFragmentInjector, HasActivityInj
 
     override fun activityInjector(): DispatchingAndroidInjector<Activity> {
         return activityInjector
+    }
+
+    private fun initLibraries(){
+        Picasso.setSingletonInstance(Picasso.Builder(this).build())
     }
 
 

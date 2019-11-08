@@ -37,4 +37,7 @@ abstract class BaseActivity : DaggerAppCompatActivity()  {
         super.onSaveInstanceState(outState, outPersistentState)
         requestPortraitOrientation()
     }
+
+
+
 }
