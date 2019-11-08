@@ -20,8 +20,6 @@ class NewsAppDataSourceBuilder {
                 .baseUrl(NewsConstants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
-
-
         return retrofit.create(NewsAppDataSource :: class.java)
     }
 
