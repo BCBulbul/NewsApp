@@ -15,4 +15,5 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector
     abstract fun bindDetailActivity() : DetailActivity
 
+
 }

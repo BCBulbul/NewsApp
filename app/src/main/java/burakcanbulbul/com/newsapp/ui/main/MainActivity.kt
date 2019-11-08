@@ -1,25 +1,17 @@
 package burakcanbulbul.com.newsapp.ui.main
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Toast
 import burakcanbulbul.com.newsapp.R
 import burakcanbulbul.com.newsapp.adapter.NewsListAdapter
 import burakcanbulbul.com.newsapp.base.BaseActivity
 import burakcanbulbul.com.newsapp.model.DataSource
-import burakcanbulbul.com.newsapp.model.Headlines
 import burakcanbulbul.com.newsapp.model.Source
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource
-import burakcanbulbul.com.newsapp.remote.NewsAppDataSourceBuilder
+import burakcanbulbul.com.newsapp.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.news_toolbar.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -30,6 +22,7 @@ class MainActivity : BaseActivity(), MainContract.View, AdapterView.OnItemClickL
 
     private lateinit var mainPresenter : MainPresenter
     private lateinit var newsListAdapter: NewsListAdapter
+    private lateinit var dataList: ArrayList<Source>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +46,7 @@ class MainActivity : BaseActivity(), MainContract.View, AdapterView.OnItemClickL
     }
 
     override fun onSuccess(dataSource: DataSource) {
+        this.dataList = dataSource.sources
         newsListAdapter = NewsListAdapter(this,dataSource)
         news_listview.adapter = newsListAdapter
     }
@@ -62,7 +56,9 @@ class MainActivity : BaseActivity(), MainContract.View, AdapterView.OnItemClickL
     }
 
     override fun onItemClick(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        Toast.makeText(this,"Tıklandı : "+position,Toast.LENGTH_LONG).show()
+        val newsIntent : Intent = Intent(this, DetailActivity:: class.java)
+        newsIntent.putExtra("name", dataList[position].name)
+        startActivity(newsIntent)
     }
 
 
