@@ -17,11 +17,6 @@ class MainApplication : DaggerApplication(), HasFragmentInjector, HasActivityInj
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
-    companion object {
-        var instance: MainApplication? = null
-            private set
-    }
-
     override fun onCreate() {
         super.onCreate()
         initLibraries()

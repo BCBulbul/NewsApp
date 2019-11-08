@@ -1,6 +1,6 @@
 package burakcanbulbul.com.newsapp.ui.mvp
 
-interface MainPresenter {
+interface MainPresenterView {
 
     fun onStart()
 

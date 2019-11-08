@@ -5,7 +5,7 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.OnLifecycleEvent
 
-abstract class MainPresenterImpl<Any> : MainPresenter, LifecycleObserver {
+abstract class MainPresenterImpl<Any> : MainPresenterView, LifecycleObserver {
 
     var mainView : MainView? = null
 
