@@ -3,9 +3,11 @@ package burakcanbulbul.com.newsapp.adapter
 import android.content.Context
 import android.support.v7.widget.AppCompatTextView
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import burakcanbulbul.com.newsapp.R
 import burakcanbulbul.com.newsapp.model.Article
 import burakcanbulbul.com.newsapp.widget.OnRecyclerViewClickListener
@@ -39,7 +41,12 @@ class NewsRecyclerViewAdapter constructor(private val articles : ArrayList<Artic
         fun bind(article : Article){
             itemView.news_list_item_time_text.text = article.publishedAt
             itemView.news_list_item_title.text = article.title
-
+            Picasso.get().
+                    load(article.urlToImage).
+                    into(itemView.news_list_item_image)
+            itemView.news_list_item_read_list_text.setOnClickListener {
+                Log.d("ReadListTıklandı",itemView.news_list_item_read_list_text.text.toString())
+            }
         }
     }
 }

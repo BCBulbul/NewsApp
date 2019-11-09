@@ -25,6 +25,8 @@ class DetailActivity : BaseActivity() , DetailContract.View{
     private lateinit var newsRecyclerViewAdapter: NewsRecyclerViewAdapter
     private lateinit var detailPresenter: DetailPresenter
 
+    private var dataList : ArrayList<Article> = arrayListOf()
+
     override fun getLayoutRes(): Int = R.layout.activity_detail
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +40,6 @@ class DetailActivity : BaseActivity() , DetailContract.View{
         sourceName = this.intent.getStringExtra("name")
         news_detail_toolbar_text_view.text = sourceName
         initPresenter()
-        Toast.makeText(this,"Gelen data : "+sourceName,Toast.LENGTH_LONG).show()
     }
 
     override fun initPresenter() {
@@ -53,6 +54,7 @@ class DetailActivity : BaseActivity() , DetailContract.View{
     }
 
     override fun onSuccess(articles: ArrayList<Article>) {
+        this.dataList = articles
         initAdapter(articles)
     }
 
@@ -65,7 +67,8 @@ class DetailActivity : BaseActivity() , DetailContract.View{
     }
 
     override fun onRecyclerViewClick(view: View?, position: Int) {
-        Log.d("Clicked", "pos:$position")
+        // burada url değeri intentle yeni bir activity e geçilecke, activity açtırılacak
+        Log.d("Posisiton",this.dataList[position].url)
     }
 
 
