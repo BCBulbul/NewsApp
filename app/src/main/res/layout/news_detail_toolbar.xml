@@ -17,6 +17,7 @@
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.AppCompatImageView
+                android:onClick="backIconPressed"
                 android:id="@+id/news_detail_back_icon"
                 app:srcCompat="@drawable/leftchevron"
                 android:layout_width="24dp"

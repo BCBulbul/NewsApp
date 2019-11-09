@@ -14,6 +14,8 @@ class DetailPresenter constructor(mainView: DetailContract.View) : DetailContrac
     @Inject
     lateinit var newsAppDataSource: NewsAppDataSource
 
+    private lateinit var onSuccessListener: DetailContract.OnSuccessListener
+
     override fun setDataSource(newsAppDataSource: NewsAppDataSource) {
         this.newsAppDataSource = newsAppDataSource
     }
@@ -30,6 +32,10 @@ class DetailPresenter constructor(mainView: DetailContract.View) : DetailContrac
 
 
         })
+    }
+
+    override fun setOnSuccessListener(onSuccessListener: DetailContract.OnSuccessListener) {
+        this.onSuccessListener = onSuccessListener
     }
 
 
