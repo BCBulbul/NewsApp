@@ -47,7 +47,7 @@ class MainActivity : BaseActivity(), MainContract.View, AdapterView.OnItemClickL
 
     override fun onSuccess(dataSource: DataSource) {
         this.dataList = dataSource.sources
-        newsListAdapter = NewsListAdapter(this,dataSource)
+        newsListAdapter = NewsListAdapter(dataSource)
         news_listview.adapter = newsListAdapter
     }
 

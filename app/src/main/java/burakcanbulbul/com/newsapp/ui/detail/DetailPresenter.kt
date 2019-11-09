@@ -23,7 +23,9 @@ class DetailPresenter constructor(mainView: DetailContract.View) : DetailContrac
     override fun getNewsHeadlines() {
         newsAppDataSource.getArticleHeadlines().enqueue(object : Callback<Headlines>{
             override fun onResponse(call: Call<Headlines>, response: Response<Headlines>) {
-
+                if(response.isSuccessful.and(response.body() != null)){
+                    onSuccessListener.onSuccess(response.body()!!.articles)
+                }
             }
 
             override fun onFailure(call: Call<Headlines>, t: Throwable) {

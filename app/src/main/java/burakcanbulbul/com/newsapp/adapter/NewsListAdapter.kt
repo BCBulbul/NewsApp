@@ -12,16 +12,7 @@ import burakcanbulbul.com.newsapp.model.Source
 import kotlinx.android.synthetic.main.news_list_custom_layout.view.*
 
 
-class NewsListAdapter : BaseAdapter {
-
-    private var context : Context
-    private var dataSource : DataSource
-
-    constructor(context: Context, dataSource: DataSource){
-        this.context = context
-        this.dataSource = dataSource
-    }
-
+class NewsListAdapter constructor(private var dataSource: DataSource) : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val source : Source = dataSource.sources[position]

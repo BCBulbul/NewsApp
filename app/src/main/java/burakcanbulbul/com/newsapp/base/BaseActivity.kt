@@ -25,8 +25,6 @@ abstract class BaseActivity : DaggerAppCompatActivity()  {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState, persistentState)
         requestPortraitOrientation()
-
-
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
@@ -48,10 +46,8 @@ abstract class BaseActivity : DaggerAppCompatActivity()  {
         }
     }
 
-    fun setToolbar(toolbar: Toolbar){
-        setSupportActionBar(toolbar)
+    fun setToolbarTitle(title : String){
+        supportActionBar?.title = title
     }
-
-
 
 }

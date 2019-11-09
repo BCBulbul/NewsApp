@@ -5,13 +5,15 @@ import burakcanbulbul.com.newsapp.model.Headlines
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource
 import burakcanbulbul.com.newsapp.ui.mvp.MainPresenterImpl
 import burakcanbulbul.com.newsapp.ui.mvp.MainView
+import burakcanbulbul.com.newsapp.widget.OnRecyclerViewClickListener
 
 interface DetailContract {
 
-    interface View : MainView,OnSuccessListener {
+    interface View : MainView,OnSuccessListener, OnRecyclerViewClickListener {
         fun init()
         fun initPresenter()
         fun fetchNewsHeadlines()
+        fun initAdapter(articles: ArrayList<Article>)
     }
 
     interface OnSuccessListener{

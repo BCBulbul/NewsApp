@@ -2,13 +2,16 @@ package burakcanbulbul.com.newsapp.ui.detail
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import burakcanbulbul.com.newsapp.R
+import burakcanbulbul.com.newsapp.adapter.NewsRecyclerViewAdapter
 import burakcanbulbul.com.newsapp.base.BaseActivity
 import burakcanbulbul.com.newsapp.model.Article
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource
+import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.news_detail_toolbar.*
 import javax.inject.Inject
 
@@ -18,8 +21,8 @@ class DetailActivity : BaseActivity() , DetailContract.View{
     lateinit var newsAppDataSource: NewsAppDataSource
 
     private var sourceName : String? = ""
-    private var articleList : ArrayList<Article> = arrayListOf()
 
+    private lateinit var newsRecyclerViewAdapter: NewsRecyclerViewAdapter
     private lateinit var detailPresenter: DetailPresenter
 
     override fun getLayoutRes(): Int = R.layout.activity_detail
@@ -33,26 +36,38 @@ class DetailActivity : BaseActivity() , DetailContract.View{
     override fun init() {
         changeStatusBarColor(R.color.news_blue)
         sourceName = this.intent.getStringExtra("name")
+        news_detail_toolbar_text_view.text = sourceName
+        initPresenter()
         Toast.makeText(this,"Gelen data : "+sourceName,Toast.LENGTH_LONG).show()
     }
 
     override fun initPresenter() {
         detailPresenter = DetailPresenter(this)
         detailPresenter.setDataSource(newsAppDataSource)
+        detailPresenter.setOnSuccessListener(this)
+        fetchNewsHeadlines()
     }
 
     override fun fetchNewsHeadlines() {
-
+        detailPresenter.getNewsHeadlines()
     }
 
     override fun onSuccess(articles: ArrayList<Article>) {
-        for(article in articles){
-            if(article.status.name == sourceName){
-                Log.d("Eşitler"+article.status.name,"daasdas"+sourceName)
-                articleList.add(article)
-            }
-        }
+        initAdapter(articles)
     }
+
+    override fun initAdapter(articles: ArrayList<Article>) {
+        newsRecyclerViewAdapter = NewsRecyclerViewAdapter(articles)
+        newsRecyclerViewAdapter.setOnRecyclerViewClickListener(this)
+        news_detail_recycler_view.layoutManager = LinearLayoutManager(this)
+        news_detail_recycler_view.setHasFixedSize(true)
+        news_detail_recycler_view.adapter = newsRecyclerViewAdapter
+    }
+
+    override fun onRecyclerViewClick(view: View?, position: Int) {
+        Log.d("Clicked", "pos:$position")
+    }
+
 
     fun backIconPressed(view : View){onBackPressed()}
 }
