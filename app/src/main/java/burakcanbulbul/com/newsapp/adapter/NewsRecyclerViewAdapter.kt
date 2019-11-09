@@ -45,6 +45,7 @@ class NewsRecyclerViewAdapter constructor(private val articles : ArrayList<Artic
                     load(article.urlToImage).
                     into(itemView.news_list_item_image)
             itemView.news_list_item_read_list_text.setOnClickListener {
+                // buradad database işlemleri yapılacak
                 Log.d("ReadListTıklandı",itemView.news_list_item_read_list_text.text.toString())
             }
         }

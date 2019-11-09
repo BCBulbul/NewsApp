@@ -1,5 +1,6 @@
 package burakcanbulbul.com.newsapp.ui.detail
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import burakcanbulbul.com.newsapp.adapter.NewsRecyclerViewAdapter
 import burakcanbulbul.com.newsapp.base.BaseActivity
 import burakcanbulbul.com.newsapp.model.Article
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource
+import burakcanbulbul.com.newsapp.ui.panel.PanelActivity
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.news_detail_toolbar.*
 import javax.inject.Inject
@@ -67,8 +69,9 @@ class DetailActivity : BaseActivity() , DetailContract.View{
     }
 
     override fun onRecyclerViewClick(view: View?, position: Int) {
-        // burada url değeri intentle yeni bir activity e geçilecke, activity açtırılacak
-        Log.d("Posisiton",this.dataList[position].url)
+        val newsIntent : Intent = Intent(this, PanelActivity :: class.java)
+        newsIntent.putExtra("URL",dataList[position].url)
+        startActivity(newsIntent)
     }
 
 

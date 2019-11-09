@@ -1,6 +1,7 @@
 package burakcanbulbul.com.newsapp.ui.main
 
 import android.arch.lifecycle.MutableLiveData
+import android.support.v4.widget.ContentLoadingProgressBar
 import burakcanbulbul.com.newsapp.model.DataSource
 import burakcanbulbul.com.newsapp.model.Source
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource

@@ -39,7 +39,7 @@ class MainActivity : BaseActivity(), MainContract.View, AdapterView.OnItemClickL
     }
 
     override fun initPresenter() {
-        mainPresenter = MainPresenter(this)
+        mainPresenter = MainPresenter(this,this)
         mainPresenter.setDataSource(newsAppDataSource)
         mainPresenter.setOnResponseListener(this)
         fetchNewsSources()
