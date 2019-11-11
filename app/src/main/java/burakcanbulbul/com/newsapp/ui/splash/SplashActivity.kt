@@ -1,7 +1,6 @@
 package burakcanbulbul.com.newsapp.ui.splash
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import burakcanbulbul.com.newsapp.R

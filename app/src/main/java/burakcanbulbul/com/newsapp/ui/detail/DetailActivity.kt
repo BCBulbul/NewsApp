@@ -16,16 +16,12 @@ import burakcanbulbul.com.newsapp.model.Article
 import burakcanbulbul.com.newsapp.model.Headlines
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource
 import burakcanbulbul.com.newsapp.ui.panel.PanelActivity
-import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.internal.operators.observable.ObservableAll
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.news_detail_toolbar.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import android.support.v4.os.HandlerCompat.postDelayed
+import burakcanbulbul.com.newsapp.data.local.db.data.AppDatabase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +31,8 @@ class DetailActivity : BaseActivity() , DetailContract.View{
 
     @Inject
     lateinit var newsAppDataSource: NewsAppDataSource
+    @Inject
+    lateinit var appDatabase: AppDatabase
 
     private var sourceName : String? = ""
 
@@ -49,8 +47,6 @@ class DetailActivity : BaseActivity() , DetailContract.View{
         super.onCreate(savedInstanceState)
         setContentView(getLayoutRes())
         init()
-
-
     }
 
     override fun init() {
@@ -78,8 +74,9 @@ class DetailActivity : BaseActivity() , DetailContract.View{
     }
 
     override fun initAdapter(articles: ArrayList<Article>) {
-        newsRecyclerViewAdapter = NewsRecyclerViewAdapter(articles)
+        newsRecyclerViewAdapter = NewsRecyclerViewAdapter(this,articles)
         newsRecyclerViewAdapter.setOnRecyclerViewClickListener(this)
+        newsRecyclerViewAdapter.setAppDatabase(appDatabase)
         news_detail_recycler_view.layoutManager = LinearLayoutManager(this)
         news_detail_recycler_view.setHasFixedSize(true)
         news_detail_recycler_view.adapter = newsRecyclerViewAdapter
@@ -91,21 +88,21 @@ class DetailActivity : BaseActivity() , DetailContract.View{
         startActivity(newsIntent)
     }
 
+    // her 1 dakikada bir istek atılan ve yeni haber varsa listeyi refresh eden method
 
     override fun refreshNews() {
         val handler = Handler()
         handler.postDelayed(object : Runnable {
             override fun run() {
                 newsAppDataSource.getArticleHeadlines().enqueue(object : Callback<Headlines>{
-
                     override fun onResponse(call: Call<Headlines>, response: Response<Headlines>) {
                         if(response.isSuccessful.and(response.body() != null)){
                             if(dataList.size < response.body()!!.articles.size){
-                                Toast.makeText(this@DetailActivity,"Yeni haberler eklendi",Toast.LENGTH_LONG).show()
-                                newsRecyclerViewAdapter = NewsRecyclerViewAdapter(response.body()!!.articles)
+                                newsRecyclerViewAdapter = NewsRecyclerViewAdapter(this@DetailActivity,response.body()!!.articles)
                                 news_detail_recycler_view.layoutManager = LinearLayoutManager(this@DetailActivity)
                                 news_detail_recycler_view.adapter = newsRecyclerViewAdapter
                                 news_detail_recycler_view.scrollToPosition(0)
+                                Toast.makeText(this@DetailActivity,"Yeni haberler eklendi",Toast.LENGTH_LONG).show()
                             }
                         }
                     }

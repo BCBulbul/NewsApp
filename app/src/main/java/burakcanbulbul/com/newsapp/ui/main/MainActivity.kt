@@ -11,8 +11,6 @@ import burakcanbulbul.com.newsapp.model.DataSource
 import burakcanbulbul.com.newsapp.model.Source
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource
 import burakcanbulbul.com.newsapp.ui.detail.DetailActivity
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
