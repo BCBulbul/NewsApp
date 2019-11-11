@@ -14,6 +14,7 @@ interface DetailContract {
         fun initPresenter()
         fun fetchNewsHeadlines()
         fun initAdapter(articles: ArrayList<Article>)
+        fun refreshNews()
     }
 
     interface OnSuccessListener{

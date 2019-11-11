@@ -1,8 +1,10 @@
 package burakcanbulbul.com.newsapp.ui.detail
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
@@ -11,11 +13,23 @@ import burakcanbulbul.com.newsapp.R
 import burakcanbulbul.com.newsapp.adapter.NewsRecyclerViewAdapter
 import burakcanbulbul.com.newsapp.base.BaseActivity
 import burakcanbulbul.com.newsapp.model.Article
+import burakcanbulbul.com.newsapp.model.Headlines
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource
 import burakcanbulbul.com.newsapp.ui.panel.PanelActivity
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.internal.operators.observable.ObservableAll
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.news_detail_toolbar.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import android.support.v4.os.HandlerCompat.postDelayed
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class DetailActivity : BaseActivity() , DetailContract.View{
 
@@ -35,6 +49,8 @@ class DetailActivity : BaseActivity() , DetailContract.View{
         super.onCreate(savedInstanceState)
         setContentView(getLayoutRes())
         init()
+
+
     }
 
     override fun init() {
@@ -42,6 +58,7 @@ class DetailActivity : BaseActivity() , DetailContract.View{
         sourceName = this.intent.getStringExtra("name")
         news_detail_toolbar_text_view.text = sourceName
         initPresenter()
+        refreshNews()
     }
 
     override fun initPresenter() {
@@ -72,6 +89,37 @@ class DetailActivity : BaseActivity() , DetailContract.View{
         val newsIntent : Intent = Intent(this, PanelActivity :: class.java)
         newsIntent.putExtra("URL",dataList[position].url)
         startActivity(newsIntent)
+    }
+
+
+    override fun refreshNews() {
+        val handler = Handler()
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                newsAppDataSource.getArticleHeadlines().enqueue(object : Callback<Headlines>{
+
+                    override fun onResponse(call: Call<Headlines>, response: Response<Headlines>) {
+                        if(response.isSuccessful.and(response.body() != null)){
+                            if(dataList.size < response.body()!!.articles.size){
+                                Toast.makeText(this@DetailActivity,"Yeni haberler eklendi",Toast.LENGTH_LONG).show()
+                                newsRecyclerViewAdapter = NewsRecyclerViewAdapter(response.body()!!.articles)
+                                news_detail_recycler_view.layoutManager = LinearLayoutManager(this@DetailActivity)
+                                news_detail_recycler_view.adapter = newsRecyclerViewAdapter
+                                news_detail_recycler_view.scrollToPosition(0)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Headlines>, t: Throwable) {
+                        Log.d("OnFailure",t.message)
+                    }
+
+
+                })
+
+                handler.postDelayed(this, 60000)
+            }
+        }, 60000)
     }
 
 

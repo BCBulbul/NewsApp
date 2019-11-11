@@ -11,6 +11,8 @@ import burakcanbulbul.com.newsapp.model.DataSource
 import burakcanbulbul.com.newsapp.model.Source
 import burakcanbulbul.com.newsapp.remote.NewsAppDataSource
 import burakcanbulbul.com.newsapp.ui.detail.DetailActivity
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -53,6 +55,7 @@ class MainActivity : BaseActivity(), MainContract.View, AdapterView.OnItemClickL
 
     override fun fetchNewsSources() {
         mainPresenter.getNewsSources()
+
     }
 
     override fun onItemClick(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
